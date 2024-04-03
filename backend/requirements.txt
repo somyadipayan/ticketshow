@@ -1,0 +1,12 @@
+Flask
+Flask-SQLAlchemy
+Flask-Marshmallow
+Flask-Bcrypt
+Flask-JWT-Extended
+Flask-Caching
+Flask-Cors
+Flask-RESTful
+matplotlib
+numpy
+celery
+redis

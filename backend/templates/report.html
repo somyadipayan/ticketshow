@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Shows Watched</title>
+</head>
+<body style="font-family: Arial, sans-serif; background-color: #f8f9fa; margin: 0; padding: 0;">
+
+    <div style="background-color: #ffffff; padding: 20px;">
+        <div>
+            <h1 style="margin: 0; padding: 10px; font-size: 28px;">Shows booked by you in the last month:</h1>
+        </div>
+        <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
+            <thead>
+                <tr style="background-color: #343a40; color: #ffffff;">
+                    <th style="padding: 10px; text-align: left;">Show Name</th>
+                    <th style="padding: 10px; text-align: left;">Date</th>
+                    <th style="padding: 10px; text-align: left;">No. of Tickets</th>
+                    <th style="padding: 10px; text-align: left;">Rating</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for show_info in show_info_list %}
+                <tr>
+                    <td style="padding: 10px; border-bottom: 1px solid #dee2e6;">{{ show_info.name }}</td>
+                    <td style="padding: 10px; border-bottom: 1px solid #dee2e6;">{{ show_info.date }}</td>
+                    <td style="padding: 10px; border-bottom: 1px solid #dee2e6;">{{ show_info.no_of_tickets }}</td>
+                    <td style="padding: 10px; border-bottom: 1px solid #dee2e6;">{{ show_info.rating }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    {% if highest_rated_show %}
+    <div style="background-color: #ffffff; padding: 20px; margin-top: 20px;">
+        <h2 style="margin: 0; padding: 10px; font-size: 24px;">Highest-rated show by the user in the last month:</h2>
+        <p style="margin: 0; padding: 10px;">{{ highest_rated_show }}</p>
+    </div>
+    {% endif %}
+
+    {% if total_tickets_bought %}
+    <div style="background-color: #ffffff; padding: 20px; margin-top: 20px;">
+        <h2 style="margin: 0; padding: 10px; font-size: 24px;">Total tickets bought by the user in the last month:</h2>
+        <p style="margin: 0; padding: 10px;">{{ total_tickets_bought }}</p>
+    </div>
+    {% endif %}
+
+</body>
+</html>

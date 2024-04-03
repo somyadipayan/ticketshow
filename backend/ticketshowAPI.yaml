@@ -1,0 +1,466 @@
+/openapi: 3.0.0
+info:
+  title: TicketShow API
+  description: An API for managing theatres, shows and their bookings
+  version: 1.0.0
+  contact:
+    name: Somya Dipayan Majhi
+    email: 21f1001048@ds.study.iitm.ac.in
+paths:
+  /register:
+    post:
+      summary: Register a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                name:
+                  type: string
+                city:
+                  type: string
+                password:
+                  type: string
+              required:
+                - email
+                - name
+                - city
+                - password
+      responses:
+        '201':
+          description: User registered successfully
+        '409':
+          description: Email already registered
+        '500':
+          description: Error occurred while registering user
+  /login:
+    post:
+      summary: Log in with user credentials
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+              required:
+                - email
+                - password
+      responses:
+        '200':
+          description: User logged in successfully
+        '401':
+          description: Invalid credentials
+  /getuserinfo:
+    get:
+      summary: Get user information
+      security:
+        - jwt: []
+      responses:
+        '200':
+          description: User information retrieved successfully
+        '404':
+          description: User not found
+  /logout:
+    post:
+      summary: Log out the user
+      security:
+        - jwt: []
+      responses:
+        '200':
+          description: Logout successful
+  /theatres:
+    post:
+      summary: Create a new theatre (Admin)
+      security:
+        - jwt: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                place:
+                  type: string
+                location:
+                  type: string
+                capacity:
+                  type: integer
+              required:
+                - name
+                - place
+                - location
+                - capacity
+      responses:
+        '201':
+          description: Theatre created successfully
+        '400':
+          description: All fields are required
+        '403':
+          description: Access denied. Only admin can create theatre
+        '500':
+          description: Error occurred while creating theatre
+  /theatres:
+    get:
+      summary: Get all theatres (Admin)
+      security:
+        - jwt: []
+      responses:
+        '200':
+          description: Theatres retrieved successfully
+  /theatres/{theatre_id}:
+    get:
+      summary: Get details of a theatre by ID (Admin)
+      security:
+        - jwt: []
+      parameters:
+        - in: path
+          name: theatre_id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Theatre details retrieved successfully
+        '404':
+          description: Theatre not found
+  /theatres/{theatre_id}:
+    put:
+      summary: Update details of a theatre by ID (Admin)
+      security:
+        - jwt: []
+      parameters:
+        - in: path
+          name: theatre_id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                place:
+                  type: string
+                location:
+                  type: string
+                capacity:
+                  type: integer
+              required:
+                - name
+                - place
+                - location
+                - capacity
+      responses:
+        '200':
+          description: Theatre updated successfully
+        '400':
+          description: All fields are required
+        '403':
+          description: Access denied. Only admin can update theatre
+        '404':
+          description: Theatre not found
+        '500':
+          description: Error occurred while updating theatre
+  /theatres/{theatre_id}:
+    delete:
+      summary: Delete a theatre by ID (Admin)
+      security:
+        - jwt: []
+      parameters:
+        - in: path
+          name: theatre_id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Theatre deleted successfully
+        '403':
+          description: Access denied. Only admin can delete theatre
+        '404':
+          description: Theatre not found
+        '500':
+          description: Error occurred while deleting theatre
+  /theatres/{theatre_id}/shows:
+    get:
+      summary: Get shows for a theatre by ID
+      parameters:
+        - in: path
+          name: theatre_id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Shows retrieved successfully
+  /theatres/{theatre_id}/shows:
+    post:
+      summary: Add a show to a theatre (Admin)
+      security:
+        - jwt: []
+      parameters:
+        - in: path
+          name: theatre_id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                tags:
+                  type: string
+                date:
+                  type: string
+                  format: date
+                start_time:
+                  type: string
+                  format: time
+                end_time:
+                  type: string
+                  format: time
+                price:
+                  type: number
+              required:
+                - name
+                - tags
+                - date
+                - start_time
+                - end_time
+                - price
+      responses:
+        '200':
+          description: Show added successfully
+        '400':
+          description: Show timings overlap with existing shows or invalid data
+        '403':
+          description: Access denied. Only admin can add show
+        '404':
+          description: Theatre not found
+        '500':
+          description: Error occurred while adding show
+  /shows/{show_id}:
+    get:
+      summary: Get details of a show by ID
+      parameters:
+        - in: path
+          name: show_id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Show details retrieved successfully
+        '404':
+          description: Show not found
+  /theatres/{theatre_id}/shows/{show_id}:
+    put:
+      summary: Edit details of a show by ID (Admin)
+      security:
+        - jwt: []
+      parameters:
+        - in: path
+          name: theatre_id
+          required: true
+          schema:
+            type: integer
+        - in: path
+          name: show_id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                tags:
+                  type: string
+                date:
+                  type: string
+                  format: date
+                start_time:
+                  type: string
+                  format: time
+                end_time:
+                  type: string
+                  format: time
+                price:
+                  type: number
+              required:
+                - name
+                - tags
+                - date
+                - start_time
+                - end_time
+                - price
+      responses:
+        '200':
+          description: Show details updated successfully
+        '400':
+          description: Show timings overlap with existing shows or invalid data
+        '403':
+          description: Access denied. Only admin can edit show
+        '404':
+          description: Show not found
+        '500':
+          description: Error occurred while updating show
+  /theatres/{theatre_id}/shows/{show_id}:
+    delete:
+      summary: Delete a show by ID (Admin)
+      security:
+        - jwt: []
+      parameters:
+        - in: path
+          name: theatre_id
+          required: true
+          schema:
+            type: integer
+        - in: path
+          name: show_id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Show deleted successfully
+        '403':
+          description: Access denied. Only admin can delete show
+        '404':
+          description: Show not found
+        '500':
+          description: Error occurred while deleting show
+  /alltheatres:
+    get:
+      summary: Get all theatres with upcoming shows
+      responses:
+        '200':
+          description: Theatres with upcoming shows retrieved successfully
+  /book_ticket/{show_id}:
+    post:
+      summary: Book tickets for a show
+      security:
+        - jwt: []
+      parameters:
+        - in: path
+          name: show_id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                no_of_tickets:
+                  type: integer
+              required:
+                - no_of_tickets
+      responses:
+        '200':
+          description: Ticket booked successfully
+        '400':
+          description: Invalid number of tickets or not enough tickets available
+        '403':
+          description: Access denied. Only authenticated users can book tickets
+        '404':
+          description: Show not found
+        '500':
+          description: Error occurred while booking tickets
+  /my_bookings:
+    get:
+      summary: Get bookings for the current user
+      security:
+        - jwt: []
+      responses:
+        '200':
+          description: Bookings retrieved successfully
+  /update_rating:
+    post:
+      summary: Update the rating for a booking
+      security:
+        - jwt: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                booking_id:
+                  type: integer
+                rating:
+                  type: integer
+              required:
+                - booking_id
+                - rating
+      responses:
+        '200':
+          description: Rating updated successfully
+        '403':
+          description: Access denied. Only authenticated users can update rating
+        '404':
+          description: Booking not found or doesn't belong to the user
+        '500':
+          description: Error occurred while updating rating
+  /admin_ticket_stats:
+    get:
+      summary: Get line chart of total tickets sold per day by Admin
+      security:
+        - jwt: []
+      responses:
+        '200':
+          description: Line chart generated successfully
+  /admin_show_revenue_stats:
+    get:
+      summary: Get bar graph of show revenues created by Admin
+      security:
+        - jwt: []
+      responses:
+        '200':
+          description: Bar graph generated successfully
+  /generate_csv:
+    get:
+      summary: Generate CSV report of transactions for shows created by Admin
+      security:
+        - jwt: []
+      responses:
+        '200':
+          description: CSV report generated successfully
+  /clear_cache:
+    post:
+      summary: Clear the cache (Admin)
+      security:
+        - jwt: []
+      responses:
+        '200':
+          description: Cache cleared successfully
+        '403':
+          description: Access denied. Only admin can clear the cache

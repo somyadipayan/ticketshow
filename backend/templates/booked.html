@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Ticket Booking Confirmation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #333;
+        }
+        p {
+            font-size: 16px;
+            color: #555;
+        }
+        .ticket-info {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+        }
+        .thank-you {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #4caf50;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Ticket Booking Confirmation</h1>
+        <p>Hey, <strong>{{ user.name }}</strong></p>
+        <p>You have booked <strong>{{ no_of_tickets }} tickets</strong> for <strong>{{ show_name }}</strong> at <strong>{{theatre_name}}</strong>.</p>
+        <p>Your show timings are <strong>{{ start_time }}</strong> to <strong>{{ end_time }}</strong>.</p>
+        <div class="ticket-info">
+            <p><strong>Ticket Details:</strong></p>
+            <p>Show Name: {{ show_name }}</p>
+            <p>Show Date: {{ show_date }}</p>
+            <p>Show Time: {{ start_time }} - {{ end_time }}</p>
+            <p>Theatre: {{ theatre_name }}</p>
+            <p>Total Amount: {{ amount }}</p>
+        </div>
+        <p class="thank-you">Thank you for choosing us!</p>
+    </div>
+</body>
+</html>
